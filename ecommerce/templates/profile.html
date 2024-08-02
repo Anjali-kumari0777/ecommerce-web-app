@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3>User Profile</h3>
+                </div>
+                <div class="card-body text-center">
+                    {% if user.is_authenticated %}
+                    <p><strong>Name:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Joined:</strong> {{ user.date_joined }}</p>
+
+                    <h4>Order History</h4>
+                    <ul class="list-group">
+                        {% for order in orders %}
+                        <li class="list-group-item">
+                            <strong>Order ID:</strong> {{ order.order_id }} <br>
+                            <strong>Date:</strong> {{ order.timestamp }} <br>
+                            <strong>Items:</strong> {{ order.items_json }} <br>
+                            <strong>Amount:</strong> Rs. {{ order.amount }} <br>
+                            <strong>Address:</strong> {{ order.address1 }} {{ order.address2 }}, {{ order.city }}, {{ order.state }}, {{ order.zip_code }} <br>
+                            <strong>Status:</strong> {{ order.status }}
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item">You have no orders.</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>You are not logged in. Please <a href="/auth/login/">login</a> to view your profile.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
